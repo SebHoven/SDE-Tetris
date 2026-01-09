@@ -1,8 +1,10 @@
 import Board.Board;
 import Command.GameController;
+import Decorator.DecoratedPieceFactory;
+import Decorator.GhostPieceDecorator;
+import Decorator.PieceDecorator;
 import Observer.LeaderboardManager;
 import Observer.ScoreDisplay;
-import TetrisPieces.AbstractPieceFactory;
 import TetrisPieces.PieceFactory;
 import facade.GameFacade;
 import singleton.GameManager;
@@ -13,7 +15,16 @@ public class GameLoop {
 
     public static void main(String[] args) {
         Board board = new Board(10, 20);
-        PieceFactory factory = new AbstractPieceFactory();
+
+        // Use DecoratedPieceFactory instead of AbstractPieceFactory
+        // This demonstrates the Decorator Pattern!
+        PieceFactory factory = new DecoratedPieceFactory(
+                board,
+                true,  // Enable ghost pieces
+                true,  // Enable colors
+                true   // Enable bonus pieces
+        );
+
         GameController controller = new GameController(board, factory);
         GameFacade game = new GameFacade(board, controller);
         InputHandler inputHandler = new InputHandler(game);
@@ -21,7 +32,6 @@ public class GameLoop {
         // Create all observers
         ScoreDisplay scoreDisplay = new ScoreDisplay();
         LeaderboardManager leaderboard = new LeaderboardManager();
-
 
         Scanner scanner = new Scanner(System.in);
 
@@ -43,12 +53,6 @@ public class GameLoop {
             }
 
             inputHandler.handleInput(input);
-
-            // Example: Check if game is over (you'd implement this logic properly)
-            // if (controller.isGameOver()) {
-            //     GameManager.getInstance().gameOver();
-            //     gameRunning = false;
-            // }
         }
 
         scanner.close();
