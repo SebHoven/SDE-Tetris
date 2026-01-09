@@ -22,13 +22,12 @@ public class GameLoop {
         // Use DecoratedPieceFactory
         PieceFactory factory = new DecoratedPieceFactory(
                 board,
-                true,  // Enable ghost pieces
-                false, // Disable colors (not implemented in your files)
-                false  // Disable bonus (not implemented in your files)
+                true  // Enable ghost pieces
         );
 
         GameController controller = new GameController(board, factory);
-        InputHandler inputHandler = new InputHandler(controller);
+        GameFacade game = new GameFacade(board, controller);
+        InputHandler inputHandler = new InputHandler(game);
 
         // ===== OBSERVER PATTERN FOR AUTOMATIC FALLING =====
         // Create GameTimer (Subject) - pieces fall every 1000ms (1 second) initially
@@ -76,8 +75,31 @@ public class GameLoop {
             while (running && !controller.isGameOver()) {
                 try {
                     if (scanner.hasNextLine()) {
-                        String input = scanner.nextLine().toLowerCase().trim();
-                        handleInput(input, inputHandler, gameTimer, controller);
+                        String input = scanner.nextLine();
+
+                        // Check for quit command
+                        if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("q")) {
+                            System.out.println("Quitting game...");
+                            GameManager.getInstance().gameOver();
+                            running = false;
+                            break;
+                        }
+
+                        // Check for pause command
+                        if (input.equalsIgnoreCase("pause") || input.equalsIgnoreCase("p")) {
+                            if (gameTimer.isRunning()) {
+                                gameTimer.pause();
+                                System.out.println("⏸️  Game Paused - Type 'pause' again to resume");
+                            } else {
+                                gameTimer.resume();
+                                System.out.println("▶️  Game Resumed");
+                            }
+                            needsRender = true;
+                        } else {
+                            // Use InputHandler for all other commands
+                            inputHandler.handleInput(input);
+                            needsRender = true;
+                        }
                     }
                     Thread.sleep(10); // Small delay to prevent CPU spinning
                 } catch (Exception e) {
@@ -118,38 +140,7 @@ public class GameLoop {
         System.exit(0);
     }
 
-    private static void handleInput(String input, InputHandler inputHandler,
-                                    GameTimer gameTimer, GameController controller) {
-        switch (input) {
-            case "quit":
-            case "q":
-                System.out.println("Quitting game...");
-                GameManager.getInstance().gameOver();
-                running = false;
-                break;
-            case "pause":
-            case "p":
-                if (gameTimer.isRunning()) {
-                    gameTimer.pause();
-                    System.out.println("⏸️  Game Paused - Type 'pause' again to resume");
-                } else {
-                    gameTimer.resume();
-                    System.out.println("▶️  Game Resumed");
-                }
-                needsRender = true;
-                break;
-            case "space":
-            case " ":
-            case "drop":
-                controller.hardDrop();
-                needsRender = true;
-                break;
-            default:
-                inputHandler.handleInput(input);
-                needsRender = true;
-                break;
-        }
-    }
+
 
     private static void render(Board board, GameController controller, GameTimer gameTimer) {
         int width = board.getWidth();

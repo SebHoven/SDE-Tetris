@@ -15,14 +15,10 @@ public class DecoratedPieceFactory implements PieceFactory {
     private static Random rand = new Random();
     private Board board; // Needed for ghost piece
     private boolean enableGhost;
-    private boolean enableColors;
-    private boolean enableBonus;
 
-    public DecoratedPieceFactory(Board board, boolean enableGhost, boolean enableColors, boolean enableBonus) {
+    public DecoratedPieceFactory(Board board, boolean enableGhost) {
         this.board = board;
         this.enableGhost = enableGhost;
-        this.enableColors = enableColors;
-        this.enableBonus = enableBonus;
     }
 
     @Override
@@ -73,13 +69,5 @@ public class DecoratedPieceFactory implements PieceFactory {
     // Setters to enable/disable decorators on the fly
     public void setEnableGhost(boolean enable) {
         this.enableGhost = enable;
-    }
-
-    public void setEnableColors(boolean enable) {
-        this.enableColors = enable;
-    }
-
-    public void setEnableBonus(boolean enable) {
-        this.enableBonus = enable;
     }
 }

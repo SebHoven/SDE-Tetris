@@ -47,25 +47,12 @@ public class GameController implements TickObserver {
         }
     }
 
-    /**
-     * Hard drop - instantly drop piece to the bottom
-     */
     public void hardDrop() {
-        if (gameOver) {
-            return;
+        while (board.canPlace(currentPiece, currentPiece.getX(), currentPiece.getY() + 1)) {
+            currentPiece.setPosition(currentPiece.getX(), currentPiece.getY() + 1);
         }
 
-        // Keep moving down until we can't
-        while (board.canPlace(currentPiece,
-                currentPiece.getX(),
-                currentPiece.getY() + 1)) {
-            currentPiece.setPosition(
-                    currentPiece.getX(),
-                    currentPiece.getY() + 1
-            );
-        }
-
-        // Lock the piece
+        // Lock the piece in place
         lockPiece();
     }
 
