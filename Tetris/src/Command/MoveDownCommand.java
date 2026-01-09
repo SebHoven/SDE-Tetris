@@ -1,15 +1,16 @@
 package Command;
 
+import facade.GameFacade;
+
 public class MoveDownCommand implements Command {
+    private final GameFacade facade;
 
-    private GameController controller;
-
-    public MoveDownCommand(GameController controller) {
-        this.controller = controller;
+    public MoveDownCommand(GameFacade facade) {
+        this.facade = facade;
     }
 
     @Override
     public void execute() {
-        controller.moveDown();
+        facade.moveDown();
     }
 }

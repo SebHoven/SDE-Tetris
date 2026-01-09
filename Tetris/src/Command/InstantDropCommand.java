@@ -2,16 +2,15 @@ package Command;
 
 import facade.GameFacade;
 
-public class RotateCommand implements Command {
+public class InstantDropCommand implements Command {
     private final GameFacade facade;
 
-    public RotateCommand(GameFacade facade) {
+    public InstantDropCommand(GameFacade facade) {
         this.facade = facade;
     }
 
     @Override
     public void execute() {
-        facade.rotate();
+        facade.hardDrop();
     }
 }
-
