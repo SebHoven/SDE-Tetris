@@ -1,5 +1,8 @@
 import Board.Board;
 import Command.GameController;
+import Observer.GameObserver;
+import Observer.LeaderboardManager;
+import Observer.ScoreDisplay;
 import TetrisPieces.AbstractPieceFactory;
 import TetrisPieces.PieceFactory;
 import TetrisPieces.TetrisPiece;
@@ -15,13 +18,41 @@ public class GameLoop {
         GameController controller = new GameController(board, factory);
         InputHandler inputHandler = new InputHandler(controller);
 
+        // Create all observers
+        ScoreDisplay scoreDisplay = new ScoreDisplay();
+        LeaderboardManager leaderboard = new LeaderboardManager();
+
+
         Scanner scanner = new Scanner(System.in);
 
-        while (true) {
-            render(board, controller); // simple ASCII render
+        // Register all observers with GameManager
+        GameManager.addObserver(scoreDisplay);
+        GameManager.addObserver(leaderboard);
+
+        boolean gameRunning = true;
+
+        while (gameRunning) {
+            render(board, controller);
             String input = scanner.nextLine();
+
+            // Check for quit command
+            if (input.equalsIgnoreCase("quit")) {
+                GameManager.getInstance().gameOver();
+                gameRunning = false;
+                break;
+            }
+
             inputHandler.handleInput(input);
+
+            // Example: Check if game is over (you'd implement this logic properly)
+            // if (controller.isGameOver()) {
+            //     GameManager.getInstance().gameOver();
+            //     gameRunning = false;
+            // }
         }
+
+        scanner.close();
+        System.out.println("Game ended!");
     }
 
     private static void render(Board board, GameController controller) {
@@ -76,8 +107,12 @@ public class GameLoop {
             System.out.println();
         }
 
-        // Debug info
-        System.out.println("Score: " +
-                GameManager.getInstance().getScore());
+        // Display game stats
+        System.out.println("═══════════════════");
+        System.out.println("Score: " + GameManager.getInstance().getScore());
+        System.out.println("Level: " + GameManager.getInstance().getLevel());
+        System.out.println("Lines: " + GameManager.getInstance().getLinesCleared());
+        System.out.println("═══════════════════");
+        System.out.println("Commands: left, right, down, rotate, quit");
     }
 }

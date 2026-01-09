@@ -1,5 +1,11 @@
 package singleton;
 
+import Observer.GameEvent;
+import Observer.GameObserver;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameManager {
     // Static instance - created when class is loaded
     private static GameManager instance;
@@ -9,6 +15,22 @@ public class GameManager {
     private int level;
     private int linesCleared;
     private boolean isPaused;
+    private static List<GameObserver> observers = new ArrayList<>();
+
+    public static void addObserver(GameObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(GameObserver observer) {
+        observers.remove(observer);
+    }
+
+    // Notify all observers
+    private void notifyObservers(String eventType, GameManager data) {
+        for (GameObserver observer : observers) {
+            observer.update(eventType, data);
+        }
+    }
 
     // Private constructor prevents instantiation from other classes
     private GameManager() {
@@ -50,5 +72,8 @@ public class GameManager {
     public int getLinesCleared() { return linesCleared; }
     public boolean isPaused() { return isPaused; }
     public void setPaused(boolean paused) { this.isPaused = paused; }
+
+    public void gameOver() {
+    }
 }
 
