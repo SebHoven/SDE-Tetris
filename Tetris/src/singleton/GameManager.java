@@ -1,6 +1,5 @@
 package singleton;
 
-import Observer.GameEvent;
 import Observer.GameObserver;
 
 import java.util.ArrayList;

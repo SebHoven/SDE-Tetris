@@ -1,5 +1,4 @@
 package Board;
-
 import TetrisPieces.TetrisPiece;
 import singleton.GameManager;
 
@@ -8,6 +7,7 @@ public class Board {
     private final int width;
     private final int height;
     private final int[][] grid;
+    private TetrisPiece lastPlacedPiece; // Track for bonus calculation
 
     public Board(int width, int height) {
         this.width = width;
@@ -50,9 +50,10 @@ public class Board {
                 }
             }
         }
+
+        // Store the last placed piece for bonus calculation
+        lastPlacedPiece = piece;
     }
-
-
 
     public int clearFullLines() {
         int cleared = 0;
@@ -71,9 +72,16 @@ public class Board {
                 cleared++;
             }
         }
+
         if (cleared > 0) {
             GameManager.getInstance().clearLines(cleared);
-            GameManager.getInstance().addScore(cleared * 100);
+
+            // Calculate score with bonus multiplier if applicable
+            int baseScore = cleared * 100;
+            double multiplier = 1.0;
+
+            int finalScore = (int)(baseScore * multiplier);
+            GameManager.getInstance().addScore(finalScore);
         }
         return cleared;
     }
