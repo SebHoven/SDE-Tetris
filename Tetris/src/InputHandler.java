@@ -4,6 +4,8 @@ import Command.MoveLeftCommand;
 import Command.MoveRightCommand;
 import Command.MoveDownCommand;
 import Command.RotateCommand;
+import Command.InstantDropCommand;
+import facade.GameFacade;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,11 +15,12 @@ public class InputHandler {
 
     private final Map<String, Command> commands = new HashMap<>();
 
-    public InputHandler(GameController controller) {
-        commands.put("a", new MoveLeftCommand(controller));
-        commands.put("d", new MoveRightCommand(controller));
-        commands.put("s", new MoveDownCommand(controller));
-        commands.put("r", new RotateCommand(controller));
+    public InputHandler(GameFacade game) {
+        commands.put("a", new MoveLeftCommand(game));
+        commands.put("d", new MoveRightCommand(game));
+        commands.put("s", new MoveDownCommand(game));
+        commands.put("r", new RotateCommand(game));
+        commands.put(" ", new InstantDropCommand(game));
     }
 
     public void handleInput(String input) {

@@ -40,6 +40,15 @@ public class GameController {
         }
     }
 
+    public void hardDrop() {
+        while (board.canPlace(currentPiece, currentPiece.getX(), currentPiece.getY() + 1)) {
+            currentPiece.setPosition(currentPiece.getX(), currentPiece.getY() + 1);
+        }
+
+        // Lock the piece in place
+        lockPiece();
+    }
+
     private void tryMove(int dx, int dy) {
         if (board.canPlace(currentPiece,
                 currentPiece.getX() + dx,
