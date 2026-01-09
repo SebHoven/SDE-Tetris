@@ -1,5 +1,6 @@
 package singleton;
 
+import Observer.GameEvent;
 import Observer.GameObserver;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class GameManager {
     }
 
     // Notify all observers
-    private void notifyObservers(String eventType, GameManager data) {
+    private void notifyObservers(String eventType, GameEvent data) {
         for (GameObserver observer : observers) {
             observer.update(eventType, data);
         }
@@ -47,15 +48,33 @@ public class GameManager {
         return instance;
     }
 
-    // Game methods
+    // Game methods - FIXED: now notify observers
     public void addScore(int points) {
         this.score += points;
+        // Notify observers of score change
+        GameEvent event = new GameEvent(score, linesCleared, level);
+        notifyObservers("SCORE_UPDATED", event);
     }
 
     public void clearLines(int numLines) {
         this.linesCleared += numLines;
+        int oldLevel = this.level;
         // Level up every 10 lines
         this.level = (this.linesCleared / 10) + 1;
+
+        // Notify observers that lines were cleared
+        GameEvent event = new GameEvent(score, numLines, level);
+        notifyObservers("LINES_CLEARED", event);
+
+        // Notify if level changed
+        if (level != oldLevel) {
+            notifyObservers("LEVEL_UP", event);
+        }
+    }
+
+    public void gameOver() {
+        GameEvent event = new GameEvent(score, linesCleared, level);
+        notifyObservers("GAME_OVER", event);
     }
 
     public void resetGame() {
@@ -63,6 +82,9 @@ public class GameManager {
         this.level = 1;
         this.linesCleared = 0;
         this.isPaused = false;
+
+        GameEvent event = new GameEvent(score, linesCleared, level);
+        notifyObservers("GAME_RESET", event);
     }
 
     // Getters
@@ -71,8 +93,4 @@ public class GameManager {
     public int getLinesCleared() { return linesCleared; }
     public boolean isPaused() { return isPaused; }
     public void setPaused(boolean paused) { this.isPaused = paused; }
-
-    public void gameOver() {
-    }
 }
-
