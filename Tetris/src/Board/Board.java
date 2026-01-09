@@ -1,3 +1,5 @@
+package Board;
+
 import TetrisPieces.TetrisPiece;
 import singleton.GameManager;
 
@@ -85,5 +87,13 @@ public class Board {
 
     public int[][] getGrid() {
         return grid;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 }
