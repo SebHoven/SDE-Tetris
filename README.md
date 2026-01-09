@@ -22,6 +22,7 @@ Ik heb de Factory pattern gebruikt om de verschillende tetris blokken aan te mak
 Facories zijn ook handig als je het met nieuwe blokken uit wil breiden(wat niet zo snel het geval zal zijn bij tetris in dit geval), dit komt omdat het aanmaken van de verschillende tetris blokken wordt gescheiden van het echte gebruik van de tetris blokken in de code.
 
 #### Singleton
+Voor de Singleton pattern heb ik ervoor gezorgd dat er van een bepaalde class is maar eenn instantie kan bestaan binnen de hele applicatie. Dit is handig voor  de game status. De Singleton class bevat een private constructor, zodat er geen nieuwe objecten van buitenaf aangemaakt kunnen worden. De enige manier om toegang te krijgen tot de instantie is via een public static methode (bijvoorbeeld getInstance()), die altijd dezelfde instantie teruggeeft.
 
 ### Structural Patterns 
 
@@ -29,7 +30,13 @@ Facories zijn ook handig als je het met nieuwe blokken uit wil breiden(wat niet 
 
 Ik heb de façade pattern gebruikt om de GameFacade klasse aan te maken. In deze klasse staan versimpelde versies van de functies die ik in GameController heb geschreven. Een façade zorgt voor een versimpelde interface tot een complexere groep van functies/klassen. Dit zorgt er ook voor dat de code makkelijker is om bij te houden en makkelijker voor andere mensen om er aan te werken.
 
+##### Decorator
+Voor de decorator pattern is de GhostPieceDecorator gebruikt om extra functionaliteit toe te voegen aan een bestaand TetrisPiece, zonder het originele  aan te passen. Deze decorator voegt een ghost piece toe die laat zien waar het huidige blok zal landen wanneer het naar beneden valt. De GhostPieceDecorator gebruikt de  PieceDecorator, dat  hetzelfde interface gebruikt als TetrisPiece. Hierdoor kan de ghost-functionaliteit worden toegevoegd zonder dat de rest van de code aan te passen. De decorator berekent de landingspositie van het blok op het speelbord en kan deze informatie gebruiken om een  preview te tonen. 
 ### Behavioral Patterns
+
+#### Observer
+
+Voor het Observer pattern is de GameTimer gebruikt. Deze klasse houdt een lijst bij van de TickObserver en informeert deze automatisch wanneer er een tick plaatsvindt. Een tick bepaalt wanneer een blok een stap naar beneden mag bewegen. Observers kunnen zich registreren bij de GameTimer en ontvangen meldingen via de onTick() methode. Daarnaast worden de observers ook op de hoogte gebracht wanneer de snelheid van de timer verandert. Door gebruik te maken van het Observer pattern blijft de GameTimer losgekoppeld van de  game-logica. Hierdoor kan de timing eenvoudig worden aangepast of uitgebreid zonder dat andere onderdelen van het spel aangepast hoeven te worden.
 
 #### Command
 
