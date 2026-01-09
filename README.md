@@ -4,8 +4,11 @@ Java console tetris game - gemaakt door Sidney Felius en Seb van den Hoven
 ## Samenwerking
 We hebben ervoor gekozen om van elk type design pattern er allebij één van te implementeren. 
 
+
 Sidney: Singleton, Decorator, Observer.
+
 Seb: Factory, Façade, Command.
+
 
 Omdat de school meerdere dagen gesloten was en veel van de lessen online gehouden werden hebben we veel vanuit thuis moeten doen.
 
