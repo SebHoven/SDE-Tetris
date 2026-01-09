@@ -1,33 +1,39 @@
-import Command.Command;
 import Command.GameController;
-import Command.MoveLeftCommand;
-import Command.MoveRightCommand;
-import Command.MoveDownCommand;
-import Command.RotateCommand;
-import Command.InstantDropCommand;
-import facade.GameFacade;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-
+/**
+ * InputHandler - Processes user input commands
+ */
 public class InputHandler {
+    private GameController controller;
 
-    private final Map<String, Command> commands = new HashMap<>();
-
-    public InputHandler(GameFacade game) {
-        commands.put("a", new MoveLeftCommand(game));
-        commands.put("d", new MoveRightCommand(game));
-        commands.put("s", new MoveDownCommand(game));
-        commands.put("r", new RotateCommand(game));
-        commands.put(" ", new InstantDropCommand(game));
+    public InputHandler(GameController controller) {
+        this.controller = controller;
     }
 
     public void handleInput(String input) {
-        Command command = commands.get(input);
-        if (command != null) {
-            command.execute();
+        input = input.toLowerCase().trim();
+
+        switch (input) {
+            case "left":
+            case "a":
+                controller.moveLeft();
+                break;
+            case "right":
+            case "d":
+                controller.moveRight();
+                break;
+            case "down":
+            case "s":
+                controller.moveDown();
+                break;
+            case "rotate":
+            case "w":
+            case "r":
+                controller.rotate();
+                break;
+            default:
+                System.out.println("Unknown command: " + input);
+                break;
         }
     }
 }
-
