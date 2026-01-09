@@ -46,6 +46,12 @@ public abstract class AbstractTetrisPiece implements TetrisPiece {
         shape = rotateMatrix(shape);
     }
 
+    @Override
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     protected int[][] rotateMatrix(int[][] matrix) {
         int size = matrix.length;
         int[][] rotated = new int[size][size];

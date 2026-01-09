@@ -8,4 +8,6 @@ public interface TetrisPiece {
     void moveLeft();
     void moveRight();
     void rotate();
+
+    void setPosition(int x, int y);
 }
